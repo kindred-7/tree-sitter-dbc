@@ -236,8 +236,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "PATTERN",
-          "value": "NS_\\s*:"
+          "type": "SYMBOL",
+          "name": "ns_header"
         },
         {
           "type": "REPEAT",
@@ -247,6 +247,10 @@
           }
         }
       ]
+    },
+    "ns_header": {
+      "type": "PATTERN",
+      "value": "NS_\\s*:"
     },
     "_ns_symbol": {
       "type": "CHOICE",
@@ -369,8 +373,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "PATTERN",
-          "value": "BS_\\s*:"
+          "type": "SYMBOL",
+          "name": "bs_header"
         },
         {
           "type": "CHOICE",
@@ -407,6 +411,10 @@
         }
       ]
     },
+    "bs_header": {
+      "type": "PATTERN",
+      "value": "BS_\\s*:"
+    },
     "baudrate": {
       "type": "SYMBOL",
       "name": "unsigned_integer"
@@ -423,8 +431,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "PATTERN",
-          "value": "BU_\\s*:"
+          "type": "SYMBOL",
+          "name": "bu_header"
         },
         {
           "type": "REPEAT",
@@ -434,6 +442,10 @@
           }
         }
       ]
+    },
+    "bu_header": {
+      "type": "PATTERN",
+      "value": "BU_\\s*:"
     },
     "node_name": {
       "type": "SYMBOL",

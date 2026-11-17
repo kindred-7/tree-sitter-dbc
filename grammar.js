@@ -108,9 +108,11 @@ export default grammar({
         ['BU_EV_REL_'] ['BU_BO_REL_'] [SG_MUL_VAL_'] ];
     **/
     new_symbols: $ => seq(
-      /NS_\s*:/,
+      $.ns_header,
       repeat($._ns_symbol)
     ),
+
+    ns_header: $ => /NS_\s*:/,
 
     _ns_symbol: $ => choice(
       'NS_DESC_', 'CM_', 'BA_DEF_', 'BA_', 'VAL_', 'CAT_DEF_', 'CAT_', 'FILTER',
@@ -128,7 +130,9 @@ export default grammar({
       BTR1 = unsigned_integer ;
       BTR2 = unsigned_integer ;
     **/
-    bit_timing: $ => seq(/BS_\s*:/, optional(seq($.baudrate, ':', $.BTR1, ',', $.BTR2))),
+    bit_timing: $ => seq($.bs_header, optional(seq($.baudrate, ':', $.BTR1, ',', $.BTR2))),
+
+    bs_header: $ => /BS_\s*:/,
     baudrate: $ => $.unsigned_integer,
     BTR1: $ => $.unsigned_integer,
     BTR2: $ => $.unsigned_integer,
@@ -139,7 +143,9 @@ export default grammar({
       nodes = 'BU_:' {node_name} ;
       node_name = DBC_identifier ;
     **/
-    nodes: $ => seq(/BU_\s*:/, repeat($.node_name)),
+    nodes: $ => seq($.bu_header, repeat($.node_name)),
+
+    bu_header: $ => /BU_\s*:/,
     node_name: $ => $.dbc_identifier,
 
     

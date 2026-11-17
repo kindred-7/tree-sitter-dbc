@@ -257,7 +257,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "BTR1",
@@ -269,6 +269,10 @@
         },
         {
           "type": "baudrate",
+          "named": true
+        },
+        {
+          "type": "bs_header",
           "named": true
         }
       ]
@@ -880,7 +884,17 @@
   {
     "type": "new_symbols",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ns_header",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "node_name",
@@ -903,8 +917,12 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
+        {
+          "type": "bu_header",
+          "named": true
+        },
         {
           "type": "node_name",
           "named": true
@@ -1651,6 +1669,14 @@
     "extra": true
   },
   {
+    "type": "bs_header",
+    "named": true
+  },
+  {
+    "type": "bu_header",
+    "named": true
+  },
+  {
     "type": "byte_order",
     "named": true
   },
@@ -1678,6 +1704,10 @@
   {
     "type": "m",
     "named": false
+  },
+  {
+    "type": "ns_header",
+    "named": true
   },
   {
     "type": "signal_extended_value_type",
