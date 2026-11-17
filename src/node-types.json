@@ -1274,7 +1274,7 @@
           "named": true
         },
         {
-          "type": "unsigned_integer",
+          "type": "signed_integer",
           "named": true
         }
       ]
@@ -1482,15 +1482,7 @@
     "named": false
   },
   {
-    "type": "BS_:",
-    "named": false
-  },
-  {
     "type": "BU_",
-    "named": false
-  },
-  {
-    "type": "BU_:",
     "named": false
   },
   {
@@ -1586,10 +1578,6 @@
     "named": false
   },
   {
-    "type": "NS_ :",
-    "named": false
-  },
-  {
     "type": "NS_DESC_",
     "named": false
   },
@@ -1658,6 +1646,11 @@
     "named": false
   },
   {
+    "type": "block_comment",
+    "named": true,
+    "extra": true
+  },
+  {
     "type": "byte_order",
     "named": true
   },
@@ -1676,6 +1669,11 @@
   {
     "type": "env_var_type",
     "named": true
+  },
+  {
+    "type": "line_comment",
+    "named": true,
+    "extra": true
   },
   {
     "type": "m",

@@ -193,7 +193,7 @@
     },
     "dbc_identifier": {
       "type": "PATTERN",
-      "value": "[a-zA-Z_][a-zA-Z0-9_]{0,31}"
+      "value": "[a-zA-Z_][a-zA-Z0-9_]*"
     },
     "unsigned_integer": {
       "type": "PATTERN",
@@ -209,7 +209,15 @@
     },
     "char_string": {
       "type": "PATTERN",
-      "value": "\"([^\"\\\\\\r\\n]*)\""
+      "value": "\"([^\"]*)\""
+    },
+    "block_comment": {
+      "type": "PATTERN",
+      "value": "\\(\\*[\\s\\S]*?\\*\\)"
+    },
+    "line_comment": {
+      "type": "PATTERN",
+      "value": "\\/\\/[^\\n]*"
     },
     "version": {
       "type": "SEQ",
@@ -228,8 +236,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "NS_ :"
+          "type": "PATTERN",
+          "value": "NS_\\s*:"
         },
         {
           "type": "REPEAT",
@@ -361,8 +369,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "BS_:"
+          "type": "PATTERN",
+          "value": "BS_\\s*:"
         },
         {
           "type": "CHOICE",
@@ -415,8 +423,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "BU_:"
+          "type": "PATTERN",
+          "value": "BU_\\s*:"
         },
         {
           "type": "REPEAT",
@@ -471,7 +479,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "unsigned_integer"
+          "name": "signed_integer"
         },
         {
           "type": "SYMBOL",
@@ -1801,8 +1809,12 @@
       "value": "\\s+"
     },
     {
-      "type": "PATTERN",
-      "value": "\\(\\*[\\s\\S]*?\\*\\)"
+      "type": "SYMBOL",
+      "name": "block_comment"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "line_comment"
     }
   ],
   "conflicts": [],

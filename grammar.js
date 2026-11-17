@@ -15,7 +15,8 @@ export default grammar({
 
   extras: $ => [
     /\s+/,
-    /\(\*[\s\S]*?\*\)/ // Comments in the spec format [cite: 66]
+    $.block_comment,
+    $.line_comment
   ],
 
   rules: {
@@ -71,8 +72,10 @@ export default grammar({
     // 2 General Definitions
     /** Specification:
       DBC_identifier: a C_identifier which doesn’t represent a DBC-Keyword.
+      Note: the spec caps identifiers at 32 chars, but common tools emit longer
+      names, so the length limit is dropped here.
     **/
-    dbc_identifier: $ => /[a-zA-Z_][a-zA-Z0-9_]{0,31}/,
+    dbc_identifier: $ => /[a-zA-Z_][a-zA-Z0-9_]*/,
     unsigned_integer: $ => /\d+/,
     signed_integer: $ => /-?\d+/,
     double: $ => /-?\d+(\.\d+)?([eE][+-]?\d+)?/,
@@ -80,7 +83,13 @@ export default grammar({
     /** Specification:
       char_string: an arbitrary string consisting of any printable characters except double hyphens ('"') and backslashes ('\'). Control characters like Line Feed, Horizontal Tab, etc. are tolerated, but their interpretation depends on the application.
     **/
-    char_string: $ => /"([^"\\\r\n]*)"/,
+    // Note: backslashes are tolerated inside strings because GBK/Shift-JIS
+    // encoded comments can contain 0x5C as a trailing byte of a double-byte char.
+    // Newlines are tolerated because common tools wrap long comment strings.
+    char_string: $ => /"([^"]*)"/,
+
+    block_comment: $ => /\(\*[\s\S]*?\*\)/, // comments in the spec format
+    line_comment: $ => /\/\/[^\n]*/, // line comments emitted by common DBC tools
 
     
     // 4 Version and New Symbols
@@ -99,7 +108,7 @@ export default grammar({
         ['BU_EV_REL_'] ['BU_BO_REL_'] [SG_MUL_VAL_'] ];
     **/
     new_symbols: $ => seq(
-      'NS_ :',
+      /NS_\s*:/,
       repeat($._ns_symbol)
     ),
 
@@ -119,7 +128,7 @@ export default grammar({
       BTR1 = unsigned_integer ;
       BTR2 = unsigned_integer ;
     **/
-    bit_timing: $ => seq('BS_:', optional(seq($.baudrate, ':', $.BTR1, ',', $.BTR2))),
+    bit_timing: $ => seq(/BS_\s*:/, optional(seq($.baudrate, ':', $.BTR1, ',', $.BTR2))),
     baudrate: $ => $.unsigned_integer,
     BTR1: $ => $.unsigned_integer,
     BTR2: $ => $.unsigned_integer,
@@ -130,7 +139,7 @@ export default grammar({
       nodes = 'BU_:' {node_name} ;
       node_name = DBC_identifier ;
     **/
-    nodes: $ => seq('BU_:', repeat($.node_name)),
+    nodes: $ => seq(/BU_\s*:/, repeat($.node_name)),
     node_name: $ => $.dbc_identifier,
 
     
@@ -156,7 +165,7 @@ export default grammar({
     value_table_name: $ => $.dbc_identifier,
 
     // 7.1 Value Descriptions (Value Encoding)
-    value_description: $ => seq($.unsigned_integer, $.char_string),
+    value_description: $ => seq($.signed_integer, $.char_string),
 
 
     // 8 Message and Signal Definitions    
